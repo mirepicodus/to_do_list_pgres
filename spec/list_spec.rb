@@ -1,14 +1,7 @@
 require 'rspec'
 require 'pg'
 require 'list'
-
-DB = PG.connect({:dbname => 'to_do_test'})
-
-RSpec.configure do |config|
-  config.after(:each) do
-    DB.exec("DELETE FROM lists *;")
-  end
-end
+require 'spec_helper'
 
 describe List do
   it 'is initialized with a name' do
@@ -37,4 +30,14 @@ describe List do
     expect(List.all).to eq [list]
   end
 
+  it 'sets its ID when you save it' do
+    list = List.new('learn SQL')
+    list.save
+    expect(list.id).to be_a Fixnum
+  end
+
+  it 'can be initialized with its database ID' do
+    list = List.new('Epicodus stuff', 1)
+    expect(list).to be_a List
+  end
 end
