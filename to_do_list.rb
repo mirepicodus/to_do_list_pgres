@@ -1,5 +1,6 @@
 require 'pg'
 require './lib/task'
+require './lib/list'
 
 DB = PG.connect({:dbname => 'to_do'})
 

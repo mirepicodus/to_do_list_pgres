@@ -2,11 +2,13 @@ require 'pg'
 
 class Task
 
-  attr_accessor :name, :list_id
+  attr_accessor :name, :list_id, :done, :date
 
-  def initialize(name, list_id)
+  def initialize(name, list_id, date, done=false)
     @name = name
     @list_id = list_id
+    @done = done
+    @date = date
   end
 
   def self.all
@@ -15,13 +17,23 @@ class Task
     results.each do |result|
       name = result['name']
       list_id = result['list_id'].to_i
-      tasks << Task.new(name, list_id)
+      done = result['done']
+      date = result['date']
+      tasks << Task.new(name, list_id, date, done)
     end
     tasks
   end
 
   def save
-    DB.exec("INSERT INTO tasks (name, list_id) VALUES ('#{@name}', #{@list_id});")
+    DB.exec("INSERT INTO tasks (name, list_id, date, done) VALUES ('#{@name}', #{@list_id}, '#{@date}', 'f');")
+  end
+
+  def delete
+    DB.exec("DELETE FROM tasks WHERE name='#{@name}';")
+  end
+
+  def mark_done
+    DB.exec("UPDATE tasks SET done = 'true' WHERE name = '#{name}'")
   end
 
   def ==(another_task)

@@ -40,4 +40,26 @@ describe List do
     list = List.new('Epicodus stuff', 1)
     expect(list).to be_a List
   end
+
+  it 'lists all tasks in a given list' do
+    list= List.new('Epicodus stuff2')
+    list.save
+    task = Task.new('do homework',list.id, '1969-05-01')
+    task1 = Task.new('clean dishes',list.id, '1969-05-01')
+    task.save
+    task1.save
+    expect(list.tasks).to eq [task,task1]
+  end
+
+  it 'deletes list and all tasks assosiated with list' do
+    list = List.new('Epicodus stuff')
+    list.save
+    task = Task.new('do homework',list.id,'1969-05-01')
+    task1 = Task.new('clean dishes',list.id,'1969-05-01')
+    task.save
+    task1.save
+    list.delete
+    expect(List.all).to eq []
+    expect(Task.all).to eq []
+  end
 end
