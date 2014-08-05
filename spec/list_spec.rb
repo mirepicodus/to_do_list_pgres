@@ -62,4 +62,28 @@ describe List do
     expect(List.all).to eq []
     expect(Task.all).to eq []
   end
+
+  it 'sorts tasks by due date asc' do
+    list = List.new('Epicodus stuff')
+    list.save
+    task = Task.new('do homework',list.id,'1970-05-01')
+    task1 = Task.new('clean dishes1',list.id,'1975-05-01')
+    task2 = Task.new('clean dishes2',list.id,'1969-05-01')
+    task.save
+    task1.save
+    task2.save
+    expect(list.sort_tasks_by_date_asc).to eq [task2, task, task1]
+  end
+
+  it 'sorts tasks by due date desc' do
+    list = List.new('Epicodus stuff')
+    list.save
+    task = Task.new('do homework',list.id,'1970-05-01')
+    task1 = Task.new('clean dishes1',list.id,'1975-05-01')
+    task2 = Task.new('clean dishes2',list.id,'1969-05-01')
+    task.save
+    task1.save
+    task2.save
+    expect(list.sort_tasks_by_date_desc).to eq [task1, task, task2]
+  end
 end

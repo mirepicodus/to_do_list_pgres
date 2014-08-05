@@ -29,6 +29,30 @@ class List
     tasks
   end
 
+  def sort_tasks_by_date_asc
+    results = DB.exec("SELECT * FROM tasks WHERE list_id = #{@id} ORDER BY date ASC;")
+    tasks = []
+    results.each do |result|
+      name = result['name']
+      list_id = result['list_id'].to_i
+      date = result['date']
+      tasks << Task.new(name, list_id, date)
+    end
+    tasks
+  end
+
+  def sort_tasks_by_date_desc
+    results = DB.exec("SELECT * FROM tasks WHERE list_id = #{@id} ORDER BY date DESC;")
+    tasks = []
+    results.each do |result|
+      name = result['name']
+      list_id = result['list_id'].to_i
+      date = result['date']
+      tasks << Task.new(name, list_id, date)
+    end
+    tasks
+  end
+
   def save
     results = DB.exec("INSERT INTO lists (name) VALUES ('#{@name}') RETURNING id;")
     @id = results.first['id'].to_i
