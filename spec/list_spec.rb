@@ -80,10 +80,10 @@ describe List do
     list.save
     task = Task.new('do homework',list.id,'1970-05-01')
     task1 = Task.new('clean dishes1',list.id,'1975-05-01')
-    task2 = Task.new('clean dishes2',list.id,'1969-05-01')
+    task2 = Task.new('clean dishes2',list.id)
     task.save
     task1.save
     task2.save
-    expect(list.sort_tasks_by_date_desc).to eq [task1, task, task2]
+    expect(list.sort_tasks_by_date_desc).to eq [task2, task1, task]
   end
 end

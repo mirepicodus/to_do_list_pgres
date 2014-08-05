@@ -1,10 +1,7 @@
-require 'pg'
-
 class Task
 
-  attr_accessor :name, :list_id, :done, :date
-
-  def initialize(name, list_id, date, done=false)
+  attr_accessor :name, :list_id, :date, :done
+  def initialize(name, list_id, date =nil, done=false)
     @name = name
     @list_id = list_id
     @done = done
@@ -25,7 +22,11 @@ class Task
   end
 
   def save
-    DB.exec("INSERT INTO tasks (name, list_id, date, done) VALUES ('#{@name}', #{@list_id}, '#{@date}', 'f');")
+    if date == nil
+      DB.exec("INSERT INTO tasks (name, list_id, date, done) VALUES ('#{@name}', #{@list_id}, NULL, 'f');")
+    else
+      DB.exec("INSERT INTO tasks (name, list_id, date, done) VALUES ('#{@name}', #{@list_id}, '#{@date}', 'f');")
+    end
   end
 
   def delete
